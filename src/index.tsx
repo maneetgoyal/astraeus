@@ -17,7 +17,7 @@ Specifically, please consider doing the following, in no particular order:
  9) Use monospace font for all text on the page. ✅
  10) Create unit tests for increment, decrement and counter functions.
  11) Create package configuration that could be used to serve the page.
- 12) Change App to log the timestamp of when that component did mount.
+ 12) Change App to log the timestamp of when that component did mount. ✅
 */
 
 import { configureStore, createAction } from "@reduxjs/toolkit";
@@ -25,6 +25,7 @@ import { combineReducers } from "redux";
 import { createRoot } from "react-dom/client";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import "./index.css";
+import { useEffect } from "react";
 
 const increment = createAction("increment");
 const decrement = createAction("decrement");
@@ -50,6 +51,10 @@ const s = configureStore({
 export const App = () => {
   const dispatch = useDispatch();
   const counter = useSelector((s: any) => s.counter);
+
+  useEffect(() => {
+    console.log(`App mounted on ${new Date().toLocaleString()}`)
+  }, [])
 
   return (
     <>

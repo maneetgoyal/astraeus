@@ -16,7 +16,7 @@ Specifically, please consider doing the following, in no particular order:
  8) Add a drop-down to select increment and decrement step between 1, 2, and 3.
  9) Use monospace font for all text on the page. ✅
  10) Create unit tests for increment, decrement and counter functions.
- 11) Create package configuration that could be used to serve the page.
+ 11) Create package configuration that could be used to serve the page. ✅
  12) Change App to log the timestamp of when that component did mount. ✅
 */
 

@@ -20,6 +20,7 @@ Specifically, please consider doing the following, in no particular order:
  12) Change App to log the timestamp of when that component did mount.
 */
 
+import React from "react";
 import { configureStore, createAction } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import { createRoot } from "react-dom/client";
@@ -46,7 +47,7 @@ const s = configureStore({
   middleware: [timer],
 });
 
-export const App = () => {
+const App = () => {
   const dispatch = useDispatch();
   const counter = useSelector((s: any) => s.counter);
 
@@ -64,3 +65,21 @@ createRoot(document.getElementById("root")!).render(
     <App />
   </Provider>
 );
+
+/*
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Assignment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script defer src="/bundle.js"></script>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>
+
+*/

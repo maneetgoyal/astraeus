@@ -14,7 +14,7 @@ Specifically, please consider doing the following, in no particular order:
  6) Trigger an alert when counter reaches 20.
  7) If counter goes below zero, make timer decrement rather than increment it.
  8) Add a drop-down to select increment and decrement step between 1, 2, and 3.
- 9) Use monospace font for all text on the page.
+ 9) Use monospace font for all text on the page. ✅
  10) Create unit tests for increment, decrement and counter functions.
  11) Create package configuration that could be used to serve the page.
  12) Change App to log the timestamp of when that component did mount.
@@ -24,6 +24,7 @@ import { configureStore, createAction } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import { createRoot } from "react-dom/client";
 import { Provider, useDispatch, useSelector } from "react-redux";
+import "./index.css";
 
 const increment = createAction("increment");
 const decrement = createAction("decrement");

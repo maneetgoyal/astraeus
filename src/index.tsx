@@ -9,7 +9,7 @@ Specifically, please consider doing the following, in no particular order:
  1) Replace single-letter variable names with something more descriptive.
  2) Provide comments for each of the functions.
  3) Provide a general comment for the entire program, describing its purpose.
- 4) Replace type any with something more specific.
+ 4) Replace type any with something more specific. ✅
  5) Do not allow timer to increment counter past 10.
  6) Trigger an alert when counter reaches 20.
  7) If counter goes below zero, make timer decrement rather than increment it.
@@ -20,41 +20,58 @@ Specifically, please consider doing the following, in no particular order:
  12) Change App to log the timestamp of when that component did mount. ✅
 */
 
-import { configureStore, createAction } from "@reduxjs/toolkit";
+import { ActionCreatorWithoutPayload, configureStore, createAction, Middleware } from "@reduxjs/toolkit";
+import type {Action, Dispatch} from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import { createRoot } from "react-dom/client";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import "./index.css";
 import { useEffect } from "react";
 
-const increment = createAction("increment");
-const decrement = createAction("decrement");
+const ActionTitles = {
+  Increment: "increment",
+  Decrement: "decrement"
+} as const;
+type ActionType = typeof ActionTitles[keyof typeof ActionTitles];
+type Actions = ReturnType<ActionCreatorWithoutPayload<ActionType>>;
 
-const counter = (s = 0, action: any) =>
-  increment.match(action) ? s + 1 : decrement.match(action) ? s - 1 : s;
+const increment = createAction(ActionTitles.Increment);
+const decrement = createAction(ActionTitles.Decrement);
+
+/**
+ * Reducer function
+ * @param state 
+ * @param action 
+ * @returns 
+ */
+const counter = (previousState = 0, action: Action<ActionType>) =>
+  increment.match(action) ? previousState + 1 : decrement.match(action) ? previousState - 1 : previousState;
 
 const root = combineReducers({ counter });
+type RootState = ReturnType<typeof root>;
 
-const timer = ({ dispatch }: { dispatch: any }) => {
+const timer: Middleware<{}, RootState, Dispatch<Actions>> = ({ dispatch }) => {
   setInterval(() => dispatch(increment()), 1000);
-
-  return (next: any) => (action: any) => {
+  return (next: Dispatch<Actions>) => (action: Actions) => {
     next(action);
   };
 };
 
-const s = configureStore({
+/**
+ * Redux State Store
+ */
+const store = configureStore({
   reducer: root,
   middleware: [timer],
 });
 
 export const App = () => {
-  const dispatch = useDispatch();
-  const counter = useSelector((s: any) => s.counter);
+  const dispatch = useDispatch<Dispatch<Actions>>();
+  const counter = useSelector<RootState>((currentState) => currentState.counter);
 
   useEffect(() => {
     console.log(`App mounted on ${new Date().toLocaleString()}`)
-  }, [])
+  }, []);
 
   return (
     <>
@@ -66,7 +83,7 @@ export const App = () => {
 };
 
 createRoot(document.getElementById("root")!).render(
-  <Provider store={s}>
+  <Provider store={store}>
     <App />
   </Provider>
 );

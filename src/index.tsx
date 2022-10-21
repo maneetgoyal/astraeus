@@ -33,7 +33,7 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 import "./index.css";
 import { useEffect } from "react";
 
-const ActionTitles = {
+export const ActionTitles = {
   Increment: "increment",
   Decrement: "decrement",
   StepChange: "stepChange",
@@ -41,8 +41,8 @@ const ActionTitles = {
 type ActionType = typeof ActionTitles[keyof typeof ActionTitles];
 type Actions = ReturnType<ActionCreatorWithPayload<number, ActionType>>;
 
-const increment = createAction<number, ActionType>(ActionTitles.Increment);
-const decrement = createAction<number, ActionType>(ActionTitles.Decrement);
+export const increment = createAction<number, ActionType>(ActionTitles.Increment);
+export const decrement = createAction<number, ActionType>(ActionTitles.Decrement);
 const stepChange = createAction<number, ActionType>(ActionTitles.StepChange);
 
 /**
@@ -51,7 +51,7 @@ const stepChange = createAction<number, ActionType>(ActionTitles.StepChange);
  * @param action
  * @returns
  */
-const counter = (previousState = { count: 0, step: 1 }, action: Action<ActionType>) => {
+export const counter = (previousState = { count: 0, step: 1 }, action: Action<ActionType>) => {
   let newState = previousState;
   if (increment.match(action)) {
     newState = { ...previousState, count: previousState.count + action.payload };
@@ -122,8 +122,11 @@ export const App = () => {
   );
 };
 
-createRoot(document.getElementById("root")!).render(
-  <Provider store={store}>
-    <App />
-  </Provider>
-);
+const targetElement = document.getElementById("root");
+if (targetElement !== null) {
+  createRoot(targetElement).render(
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+}

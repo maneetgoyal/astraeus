@@ -8,7 +8,7 @@ Your assignment is to make it more readable, and also add some functionality.
 Specifically, please consider doing the following, in no particular order:
  1) Replace single-letter variable names with something more descriptive. ✅
  2) Provide comments for each of the functions. ✅
- 3) Provide a general comment for the entire program, describing its purpose.
+ 3) Provide a general comment for the entire program, describing its purpose. ✅
  4) Replace type any with something more specific. ✅
  5) Do not allow timer to increment counter past 10. ✅
  6) Trigger an alert when counter reaches 20. ✅
@@ -19,6 +19,17 @@ Specifically, please consider doing the following, in no particular order:
  11) Create package configuration that could be used to serve the page. ✅
  12) Change App to log the timestamp of when that component did mount. ✅
 */
+
+/**
+ * General Comment:
+ * 
+ * The program represents an interplay between core redux concepts and Typescript typings.
+ * It showcases how the core redux concepts can be used to manage the app state.
+ * It also showcases how a Redux app could be "typed" (TS) to push code more confidently and conveniently.
+ * 
+ * In a more literal sense, the app showcases a "controlled" counter which can be incremented/decremented based on the used specified step sizes. 
+ * The timer's behavior is peculiar in that it behaves differently when the counter reaches a negative value, when it exceeds 10, and when it reaches 20.
+ */
 
 import {
   ActionCreatorWithPayload,

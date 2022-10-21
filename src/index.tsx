@@ -10,9 +10,9 @@ Specifically, please consider doing the following, in no particular order:
  2) Provide comments for each of the functions.
  3) Provide a general comment for the entire program, describing its purpose.
  4) Replace type any with something more specific. ✅
- 5) Do not allow timer to increment counter past 10.
- 6) Trigger an alert when counter reaches 20.
- 7) If counter goes below zero, make timer decrement rather than increment it.
+ 5) Do not allow timer to increment counter past 10. ✅
+ 6) Trigger an alert when counter reaches 20. ✅
+ 7) If counter goes below zero, make timer decrement rather than increment it. ✅
  8) Add a drop-down to select increment and decrement step between 1, 2, and 3.
  9) Use monospace font for all text on the page. ✅
  10) Create unit tests for increment, decrement and counter functions.
@@ -50,11 +50,15 @@ const decrement = createAction(ActionTitles.Decrement);
  * @returns
  */
 const counter = (previousState = 0, action: Action<ActionType>) => {
-  return increment.match(action)
+  const newState = increment.match(action)
     ? previousState + 1
     : decrement.match(action)
     ? previousState - 1
     : previousState;
+    if (newState === 20) {
+      window.alert("Counter reached 20.")
+    }
+    return newState;
 };
 
 const root = combineReducers({ counter });

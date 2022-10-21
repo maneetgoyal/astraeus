@@ -7,7 +7,7 @@ Your assignment is to make it more readable, and also add some functionality.
 
 Specifically, please consider doing the following, in no particular order:
  1) Replace single-letter variable names with something more descriptive. ✅
- 2) Provide comments for each of the functions.
+ 2) Provide comments for each of the functions. ✅
  3) Provide a general comment for the entire program, describing its purpose.
  4) Replace type any with something more specific. ✅
  5) Do not allow timer to increment counter past 10. ✅
@@ -33,6 +33,9 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 import "./index.css";
 import { useEffect } from "react";
 
+/**
+ * A registry of all the action types.
+ */
 export const ActionTitles = {
   Increment: "increment",
   Decrement: "decrement",
@@ -41,24 +44,27 @@ export const ActionTitles = {
 type ActionType = typeof ActionTitles[keyof typeof ActionTitles];
 type Actions = ReturnType<ActionCreatorWithPayload<number, ActionType>>;
 
+/**
+ * All the action creators
+ */
 export const increment = createAction<number, ActionType>(ActionTitles.Increment);
 export const decrement = createAction<number, ActionType>(ActionTitles.Decrement);
 const stepChange = createAction<number, ActionType>(ActionTitles.StepChange);
 
 /**
- * Reducer function
+ * Reducer function to update the state based on step size and current count
  * @param state
  * @param action
  * @returns
  */
-export const counter = (previousState = { count: 0, step: 1 }, action: Action<ActionType>) => {
-  let newState = previousState;
+export const counter = (currentState = { count: 0, step: 1 }, action: Action<ActionType>) => {
+  let newState = currentState;
   if (increment.match(action)) {
-    newState = { ...previousState, count: previousState.count + action.payload };
+    newState = { ...currentState, count: currentState.count + action.payload };
   } else if (decrement.match(action)) {
-    newState = { ...previousState, count: previousState.count - action.payload };
+    newState = { ...currentState, count: currentState.count - action.payload };
   } else if (stepChange.match(action)) {
-    newState = { ...previousState, step: action.payload };
+    newState = { ...currentState, step: action.payload };
   }
   if (newState.count === 20) {
     window.alert("Counter reached 20.");
@@ -66,9 +72,17 @@ export const counter = (previousState = { count: 0, step: 1 }, action: Action<Ac
   return newState;
 };
 
+/**
+ * Combination of all the reducers
+ */
 const root = combineReducers({ counter });
 type RootState = ReturnType<typeof root>;
 
+/**
+ * Redux middleware that emulates a timer by auto incrementing/decrementing the count
+ * @param param0 
+ * @returns 
+ */
 const timer: Middleware<{}, RootState, Dispatch<Actions>> = ({ dispatch, getState }) => {
   setInterval(() => {
     const {
@@ -93,6 +107,10 @@ const store = configureStore({
   middleware: [timer],
 });
 
+/**
+ * App React component
+ * @returns 
+ */
 export const App = () => {
   const dispatch = useDispatch<Dispatch<Actions>>();
   const { count, step } = useSelector<RootState, RootState["counter"]>(

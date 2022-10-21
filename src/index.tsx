@@ -6,7 +6,7 @@ This is a React app that uses Redux store with a reducer and a middleware.
 Your assignment is to make it more readable, and also add some functionality.
 
 Specifically, please consider doing the following, in no particular order:
- 1) Replace single-letter variable names with something more descriptive.
+ 1) Replace single-letter variable names with something more descriptive. ✅
  2) Provide comments for each of the functions.
  3) Provide a general comment for the entire program, describing its purpose.
  4) Replace type any with something more specific. ✅

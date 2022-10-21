@@ -20,8 +20,13 @@ Specifically, please consider doing the following, in no particular order:
  12) Change App to log the timestamp of when that component did mount. ✅
 */
 
-import { ActionCreatorWithoutPayload, configureStore, createAction, Middleware } from "@reduxjs/toolkit";
-import type {Action, Dispatch} from "@reduxjs/toolkit";
+import {
+  ActionCreatorWithoutPayload,
+  configureStore,
+  createAction,
+  Middleware,
+} from "@reduxjs/toolkit";
+import type { Action, Dispatch } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import { createRoot } from "react-dom/client";
 import { Provider, useDispatch, useSelector } from "react-redux";
@@ -30,7 +35,7 @@ import { useEffect } from "react";
 
 const ActionTitles = {
   Increment: "increment",
-  Decrement: "decrement"
+  Decrement: "decrement",
 } as const;
 type ActionType = typeof ActionTitles[keyof typeof ActionTitles];
 type Actions = ReturnType<ActionCreatorWithoutPayload<ActionType>>;
@@ -40,18 +45,30 @@ const decrement = createAction(ActionTitles.Decrement);
 
 /**
  * Reducer function
- * @param state 
- * @param action 
- * @returns 
+ * @param state
+ * @param action
+ * @returns
  */
-const counter = (previousState = 0, action: Action<ActionType>) =>
-  increment.match(action) ? previousState + 1 : decrement.match(action) ? previousState - 1 : previousState;
+const counter = (previousState = 0, action: Action<ActionType>) => {
+  return increment.match(action)
+    ? previousState + 1
+    : decrement.match(action)
+    ? previousState - 1
+    : previousState;
+};
 
 const root = combineReducers({ counter });
 type RootState = ReturnType<typeof root>;
 
-const timer: Middleware<{}, RootState, Dispatch<Actions>> = ({ dispatch }) => {
-  setInterval(() => dispatch(increment()), 1000);
+const timer: Middleware<{}, RootState, Dispatch<Actions>> = ({ dispatch, getState }) => {
+  setInterval(() => {
+    const { counter } = getState();
+    if (counter < 0) {
+      dispatch(decrement());
+    } else if (counter < 10) {
+      dispatch(increment());
+    }
+  }, 1000);
   return (next: Dispatch<Actions>) => (action: Actions) => {
     next(action);
   };
@@ -70,7 +87,7 @@ export const App = () => {
   const counter = useSelector<RootState>((currentState) => currentState.counter);
 
   useEffect(() => {
-    console.log(`App mounted on ${new Date().toLocaleString()}`)
+    console.log(`App mounted on ${new Date().toLocaleString()}`);
   }, []);
 
   return (
